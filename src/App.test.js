@@ -10,7 +10,9 @@ const person = {
 };
 
 describe('H1 Text', () => {
-  it('h1 loads correctly', async () => {
+  let browser, page;
+
+  beforeEach(async () => {
     browser = await puppeteer.launch({
       args: [
       '--no-sandbox',
@@ -23,21 +25,34 @@ describe('H1 Text', () => {
     } catch(err) {
       console.warn(err);
     }
+  });
 
+  afterEach(async () => {
+    await browser.close();
+  });
+
+  it('h1 loads correctly', async () => {
     // =======================
     {
-      await page.waitForSelector('input', { timeout: 1500 });
-
-      let header = await page.$x('//h1');
-      assert.equal(header[0].innerHTML, 'Search Users');
-
+      const bodyHandle = await page.$('h1');
+      const html = await page.evaluate(body => body.innerHTML, bodyHandle);
+      assert.equal(html, 'Search Users');
       
       // assert.equal(autocompleteText, ' ');
     }
     // ========================  
-
-
-
-    browser.close();
   }, 16000);
+
+  it('h1 loads correctly1', async () => {
+    // =======================
+    {
+      const bodyHandle = await page.$('h1');
+      const html = await page.evaluate(body => body.innerHTML, bodyHandle);
+      assert.equal(html, 'Search Users');
+      
+      // assert.equal(autocompleteText, ' ');
+    }
+    // ========================  
+  }, 16000);
+
 });
