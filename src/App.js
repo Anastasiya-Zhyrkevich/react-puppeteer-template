@@ -78,13 +78,10 @@ class Autocomplete extends React.Component {
   updateAutocomplete(query) {
     searchUsersByName(query).then(users =>
     { 
-      console.log(users);
-      for (let user of users) {
-        console.log(`${user.item.name}`);
-      }
       console.log(users.length);
-      const pureUsers = users.map(el => el.item);
-      this.setState({ autocomplete: pureUsers })
+      // const pureUsers = users.map(el => el.item);
+      // this.setState({ autocomplete: pureUsers })
+      this.setState({ autocomplete: users })
     }
     );
   }
