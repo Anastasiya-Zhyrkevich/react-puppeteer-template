@@ -71,7 +71,7 @@ describe('H1 Text', () => {
     await page.waitForFunction(
       itemsCount =>
           document.querySelectorAll('.item').length === itemsCount,
-      { timeout: 3000 }, 
+      { timeout: 1500 }, 
       expectedItemsCount
     );
 
@@ -80,6 +80,25 @@ describe('H1 Text', () => {
     
     const itemText = await page.evaluate(elem => elem.innerText, itemsHandle[0]);
     assert.equal(itemText, 'Sally Stanton V');
+  }, 16000);
+
+  it('type Saba', async () => {
+    await page.focus('input');
+    await page.keyboard.type('a', {delay: 100}); 
+
+    const expectedItemsCount = 17;
+    await page.waitForFunction(
+      itemsCount =>
+          document.querySelectorAll('.item').length === itemsCount,
+      { timeout: 1500 }, 
+      expectedItemsCount
+    );
+
+    const itemsHandle = await page.$$('.item');
+    assert.equal(itemsHandle.length, expectedItemsCount);
+    
+    const itemText = await page.evaluate(elem => elem.innerText, itemsHandle[0]);
+    assert.equal(itemText, 'Bailey Beer');
   }, 16000);
 
 });
