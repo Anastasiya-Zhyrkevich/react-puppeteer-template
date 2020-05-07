@@ -1,3 +1,9 @@
+Usage:
+1. Add a new component
+2. Update `index.js`
+3. `npm start`
+4. `npm run test <file_name>`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

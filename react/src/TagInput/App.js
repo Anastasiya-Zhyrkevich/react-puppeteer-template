@@ -1,8 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import faker from 'faker';
-import Fuse from 'fuse.js';
 
 import {COLORS} from './colors';
 
