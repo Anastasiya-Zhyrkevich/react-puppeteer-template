@@ -4,20 +4,6 @@ const assert = require('assert');
 const utils = require('./utils');
 
 
-// class utils {
-//   static async checkInput(page, expectedValue) {
-//     let inputValue = await page.evaluate(() => document.querySelector('input').value);
-//     assert.equal(inputValue, expectedValue);
-//   }
-  
-  
-//   static async waitForLoad(page) {
-//     await page.waitForSelector('input', { timeout: 1500 });
-//   }
-// }
-
-
-
 describe('H1 Text', () => {
   let browser, page;
 
@@ -41,76 +27,17 @@ describe('H1 Text', () => {
   });
 
   it('does not show suggestions without input', async function() {
-    await utils.waitForLoad(page);
+    await page.waitForSelector('#card1', { timeout: 1500 });
+    await page.click('#card1');
 
-    let tagsSuggestions = await page.$x('//*[@class="TagSuggestions"]');
-    assert.equal(tagsSuggestions.length, 0);
-  });
-
-  it('shows matching suggestions with input', async function() {
-    await utils.waitForLoad(page);
-
-    await page.evaluate(() => document.querySelector('input').value = '');
-    await page.focus('input');
-    await page.keyboard.type('alm');
-
-    await page.waitForSelector('.TagSuggestion');
-    const tagSuggestions = await page.evaluate(() => {
-      const nodes = Array.prototype.slice.call(document.querySelectorAll('.TagSuggestion'));
-      return nodes.map(el => el.innerHTML);
-    });
-    tagSuggestions.sort();
-
-    assert.equal(tagSuggestions[0], 'Almond');
-    assert.equal(tagSuggestions[1], 'Salmon');
-  });
-
-  it('adds matching suggestions on click, clears value', async function() {
-    await utils.waitForLoad(page);
-    
-    await page.evaluate(() => document.querySelector('input').value = '');
-    await page.focus('input');
-    await page.keyboard.type('almo');
-    await utils.checkInput(page, 'almo');
-
-    await page.evaluate(() => document.querySelector('.TagSuggestion').click());
-    
-    await utils.checkInput(page, '');
-
-    let tags = await page.$x('//*[@class="Tag"]//*[contains(text(), "Almond")]');
-    assert.equal(tags.length, 1);
-  });
-
-  it('excludes already selected suggestions', async function() {
-    await utils.waitForLoad(page);
-
-    await page.focus('input');
-    await page.keyboard.type('alm');
-
-    const expectedItemsCount = 1;
-    await page.waitForFunction(
-      itemsCount => document.querySelectorAll('.TagSuggestion').length === itemsCount, 
-      { timeout: 1500 }, 
-      expectedItemsCount
+    const srcs = await page.$$eval(
+      '#card1 *', 
+      elems => elems
+                .map(elem => { console.log('meow'); return elem.getAttribute('src')})
+                .filter(src => src && src.match('a6330d'))
     );
 
-    const tagSuggestions = await page.evaluate(() => {
-      const nodes = Array.prototype.slice.call(document.querySelectorAll('.TagSuggestion'));
-      return nodes.map(el => el.innerHTML);
-    });
-    tagSuggestions.sort();
-
-    assert.equal(tagSuggestions[0], 'Salmon');
-  });
-
-  it('does not show suggestions without a match', async function() {
-    await utils.waitForLoad(page);
-
-    await page.focus('input');
-    await page.keyboard.type('azx');
-
-    let tagsSuggestions = await page.$x('//*[@class="TagSuggestions"]');
-    assert.equal(tagsSuggestions.length, 0);
+    assert.notEqual(srcs.length, 0);
   });
 
 });
