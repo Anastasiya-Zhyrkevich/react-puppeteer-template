@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './TagInput/App';
+import Autocomplete from './Autocomplete/App';
 import * as serviceWorker from './serviceWorker';
 
 
 
 ReactDOM.render(
-  <App />,
+  <Autocomplete />,
   document.getElementById('root')
 );
 

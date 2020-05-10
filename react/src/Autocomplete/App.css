@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  font-family: sans-serif;
+  padding: 1em;
+}
+
+.container {
+  width: 300px;
+  position: relative;
+}
+
+.autocompleteClass {
+  border: 1px solid black;
+  width: 100%;
+  position: absolute;
+  background-color: #fff;
+}
+
+.item {
+  padding: 10px;
+}
+
+.item:hover {
+  background-color: #66f;
+  cursor: pointer;
+  user-select: none;
+}
+
+.input {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.3em;
+}
