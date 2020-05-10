@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+  padding: 15px;
+}
+
+.form-progress-bar {
+  background-color: #007bff;
+}
+
+.progress{
+    width: 100%;
+    background: gray;
+}
+
+label, select, input{
+        width: 100%;
+        
+}
+
+.wrapper{
+    width: 50%;
+    display:inline;
+}
+

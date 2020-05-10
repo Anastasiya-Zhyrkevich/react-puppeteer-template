@@ -47,15 +47,13 @@ describe('H1 Text', () => {
     await page.keyboard.type('ab');
 
     // Check input value
-
-
     const inputHandle = await page.$('#documentName');
     const inputText = await page.evaluate(elem => elem.value, inputHandle);
     assert.equal(inputText, 'ab'); 
 
     // Check form-progress-bar
     const formProgressBarHandle = await page.$('.form-progress-bar');
-    const formProgressBarWidth = await page.evaluate(elem => elem.width, formProgressBarHandle);
+    const formProgressBarWidth = await page.evaluate(elem => elem.innerHTML, formProgressBarHandle);
     assert.equal(formProgressBarWidth, '25%'); 
   }, 16000);
 

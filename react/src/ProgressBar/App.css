@@ -4,11 +4,13 @@ body {
 
 .form-progress-bar {
   background-color: #007bff;
+  height: 100%;
 }
 
 .progress{
     width: 100%;
     background: gray;
+    height: 1rem;
 }
 
 label, select, input{
