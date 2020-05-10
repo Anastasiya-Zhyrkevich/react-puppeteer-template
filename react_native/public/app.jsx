@@ -5,6 +5,7 @@ const {createStackNavigator} = reactNavigationStack;
 
 
 const redCard = `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#a6330d" stroke="black" rx="15" stroke-width="1" /></svg>`
+const blueCard = `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#3944db" stroke="black" rx="15" stroke-width="1" /></svg>`
 const backCard =`data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#7d807a" stroke="black" rx="15" stroke-width="1" /></svg>`
 
 const styles = {
@@ -21,18 +22,7 @@ const styles = {
 }
 
 class Card extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      side: 0,
-    };
-  }
-
-  _onPressCard = () => {
-    const newSide = (this.state.side + 1) % 2;
-    this.setState({side: newSide});
-    console.log(newSide);
-  }
+  _onPressCard = () => {}
 
   _onRef = (ref) => {
     if (ref && typeof ref.setNativeProps === 'function') {
@@ -41,18 +31,13 @@ class Card extends React.Component {
   }
 
   render() {
-    let imgUrl = backCard;
-    if (this.state.side === 1) {
-      imgUrl = redCard;
-    }
-
     return (
       <View>
         <TouchableOpacity 
           onPress={this._onPressCard}>
           <Image
               accessibilityLabel="Card"
-              source={{ uri: imgUrl }}
+              source={{ uri: redCard }}
               resizeMode="contain"
               style={styles.card}
               ref={this._onRef}

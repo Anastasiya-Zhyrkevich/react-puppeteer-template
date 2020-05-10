@@ -7,6 +7,10 @@ const utils = require('./utils');
 describe('H1 Text', () => {
   let browser, page;
 
+  const RED = 'a6330d';
+  const BLUE = '3944db';
+  const GRAY = '7d807a';
+
   beforeAll(async () => {
     browser = await puppeteer.launch({
       args: [
@@ -26,18 +30,29 @@ describe('H1 Text', () => {
     await browser.close();
   });
 
-  it('does not show suggestions without input', async function() {
+  it('First click on first card', async function() {
     await page.waitForSelector('#card1', { timeout: 1500 });
     await page.click('#card1');
 
-    const srcs = await page.$$eval(
-      '#card1 *', 
-      elems => elems
-                .map(elem => { console.log('meow'); return elem.getAttribute('src')})
-                .filter(src => src && src.match('a6330d'))
-    );
+    const colorResult = await utils.checkCardColor(page, '#card1', this.RED);
+    assert.ok(colorResult);
+  });
 
-    assert.notEqual(srcs.length, 0);
+  it('Second click on first card', async function() {
+    await page.click('#card1');
+
+    const colorResult = await utils.checkCardColor(page, '#card1', this.GRAY);
+    assert.ok(colorResult);
+  });
+
+  it('First click on second card, click does not affect the first card', async function() {
+    await page.click('#card2');
+
+    const colorResult1 = await utils.checkCardColor(page, '#card1', this.GRAY);
+    assert.ok(colorResult1);
+
+    const colorResult2 = await utils.checkCardColor(page, '#card2', this.RED);
+    assert.ok(colorResult2);
   });
 
 });

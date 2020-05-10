@@ -2,15 +2,21 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 
 
-async function checkInput(page, expectedValue) {
-  let inputValue = await page.evaluate(() => document.querySelector('input').value);
-  assert.equal(inputValue, expectedValue);
-}
-
-
 async function waitForLoad(page) {
   await page.waitForSelector('input', { timeout: 1500 });
 }
 
-exports.checkInput = checkInput;
-exports.waitForLoad = waitForLoad;
+async function checkCardColor(page, cardId, colorValue) {
+  const srcs = await page.$$eval(
+    cardId + ' *', 
+    (elems, colorValue) => elems
+              .map(elem => elem.getAttribute('src'))
+              .filter(src => src && src.match(colorValue)),
+    colorValue
+  );
+  return srcs.length !== 0;
+}
+
+module.exports = {
+  checkCardColor
+}
