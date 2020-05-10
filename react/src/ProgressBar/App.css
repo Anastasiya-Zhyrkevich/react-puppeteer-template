@@ -18,6 +18,12 @@ label, select, input{
         
 }
 
+.form-progress-bar-wrapper {
+  width: 100%;
+  background: gray;
+  height: 1rem;
+}
+
 .wrapper{
     width: 50%;
     display:inline;
