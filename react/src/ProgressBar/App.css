@@ -5,6 +5,7 @@ body {
 .form-progress-bar {
   background-color: #007bff;
   height: 100%;
+  width: 0%;
 }
 
 .progress{

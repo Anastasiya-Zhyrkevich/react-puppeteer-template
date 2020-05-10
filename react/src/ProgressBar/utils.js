@@ -2,23 +2,8 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 
 
-async function checkInput(page, expectedValue) {
-  let inputValue = await page.evaluate(() => document.querySelector('input').value);
-  assert.equal(inputValue, expectedValue);
-}
-
-
 async function waitForLoad(page, cssSelector) {
   await page.waitForSelector(cssSelector, { timeout: 1500 });
-}
-
-async function elemWidth(page, cssSelector) {
-  const eHandle = await page.$(cssSelector);
-  const eWidth = await page.evaluate(
-    elem => {const {width} = elem.getBoundingClientRect(); return width}, 
-    eHandle
-  );
-  return eWidth;
 }
 
 async function _formProgressBarWidthInRange(minBound, maxBound) {
@@ -39,7 +24,6 @@ async function checkFormProgressBarWidthInRange(page, minBound, maxBound) {
 }
 
 module.exports = {
-  checkInput,
   waitForLoad,
   checkFormProgressBarWidthInRange
 };

@@ -34,11 +34,14 @@ describe('H1 Text', () => {
     assert.equal(h1Text, 'User information');
   }, 16000);
 
-  it('#documentName input should be empty', async () => {
+  it('#documentName input should be empty and progressBar width = 0%', async () => {
     await utils.waitForLoad(page, '#documentName');
 
     const inputText = await page.evaluate(() => document.querySelector('#documentName').innerText);
     assert.equal(inputText, ''); 
+
+    // Check form-progress-bar
+    await utils.checkFormProgressBarWidthInRange(page, 0.0, 0.10);
   }, 16000);
 
   it('Update #documentName value and check progressBar width = 25%', async () => {
@@ -79,9 +82,7 @@ describe('H1 Text', () => {
     await page.select('select#documentType', 'PDF');
 
     // Check form-progress-bar
-    await utils.checkFormProgressBarWidthInRange(page, 
-      0.65, 0.85
-    );
+    await utils.checkFormProgressBarWidthInRange(page, 0.65, 0.85);
   }, 16000);
 
   it('Update #category value = Application and check progressBar width = 100%', async () => {
@@ -89,9 +90,7 @@ describe('H1 Text', () => {
     await page.select('select#category', 'Application');
 
     // Check form-progress-bar
-    await utils.checkFormProgressBarWidthInRange(page, 
-      0.90, 1.00
-    );
+    await utils.checkFormProgressBarWidthInRange(page, 0.90, 1.00);
   }, 16000);
 
   it('Set maximum valid length of #documentName and check progressBar width = 100%', async () => {
@@ -100,14 +99,11 @@ describe('H1 Text', () => {
     await page.keyboard.type('cdefghijklmnopqrstuvwxyz!@#$');
 
     // Check input value
-    const inputHandle = await page.$('#documentName');
-    const inputText = await page.evaluate(elem => elem.value, inputHandle);
+    const inputText = await page.evaluate(() => document.querySelector('#documentName').value);
     assert.equal(inputText, 'abcdefghijklmnopqrstuvwxyz!@#$');
 
     // Check form-progress-bar
-    await utils.checkFormProgressBarWidthInRange(page, 
-      0.90, 1.00
-    );
+    await utils.checkFormProgressBarWidthInRange(page, 0.90, 1.00);
   }, 16000);
 
   it('Set invalid or empty fields and check progressBar width = 25%', async () => {
@@ -121,9 +117,7 @@ describe('H1 Text', () => {
     await page.keyboard.type('@@@');
 
     // Check form-progress-bar
-    await utils.checkFormProgressBarWidthInRange(page, 
-      0.15, 0.35
-    );
+    await utils.checkFormProgressBarWidthInRange(page, 0.15, 0.35);
   }, 16000);
 
   it('Set invalid values for fields and check progressBar width = 25%', async () => {
@@ -137,9 +131,7 @@ describe('H1 Text', () => {
     await page.keyboard.type('example@@example..com');
 
     // Check form-progress-bar
-    await utils.checkFormProgressBarWidthInRange(page, 
-      0.15, 0.35
-    );
+    await utils.checkFormProgressBarWidthInRange(page, 0.15, 0.35);
   }, 16000);
 
 });
