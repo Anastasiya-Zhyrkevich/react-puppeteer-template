@@ -4,9 +4,16 @@ const {NavigationContainer} = reactNavigationNative;
 const {createStackNavigator} = reactNavigationStack;
 
 
-const redCard = `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#a6330d" stroke="black" rx="15" stroke-width="1" /></svg>`
-const blueCard = `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#3944db" stroke="black" rx="15" stroke-width="1" /></svg>`
-const backCard =`data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#7d807a" stroke="black" rx="15" stroke-width="1" /></svg>`
+const redHex = '#a6330d';
+const blueHex = '#3944db';
+const grayHex = '#7d807a';
+
+const CARD_SVG_TEMPLATE = (cardColor) => `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="${cardColor}" stroke="black" rx="15" stroke-width="1" /></svg>`;
+
+const redCard = CARD_SVG_TEMPLATE(redHex);
+const blueCard = CARD_SVG_TEMPLATE(blueHex);
+const backCard = CARD_SVG_TEMPLATE(grayHex);
+
 
 const styles = {
   rowContainerStyle: {
@@ -18,7 +25,12 @@ const styles = {
     width: 100, 
     height: 200,
     margin: 10
-  }
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: redHex,
+    padding: 10
+  },
 }
 
 class Card extends React.Component {
@@ -37,7 +49,7 @@ class Card extends React.Component {
           onPress={this._onPressCard}>
           <Image
               accessibilityLabel="Card"
-              source={{ uri: redCard }}
+              source={{ uri: this.props.color }}
               resizeMode="contain"
               style={styles.card}
               ref={this._onRef}
@@ -49,11 +61,35 @@ class Card extends React.Component {
 }
 
 
+class AddingCardButton extends React.Component {
+  _onRef = (ref) => {
+    if (ref && typeof ref.setNativeProps === 'function') {
+      ref.setNativeProps({id: this.props.valueId});
+    }
+  }
+
+  render() {
+    return (
+      <View>
+        <TouchableOpacity
+          style={styles.button}>
+          <Text ref={this._onRef}>
+            {this.props.title}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
 function App() {
   return (
-    <View style={styles.rowContainerStyle}>
-      <Card valueId="card1"/>
-      <Card valueId="card2"/>
+    <View>
+      <AddingCardButton valueId="buttonRed" title="Add Red"/>
+      <View style={styles.rowContainerStyle}>
+        <Card valueId="card1" color={blueCard}/>
+        <Card valueId="card2" color={redCard}/>
+      </View>
     </View>
   );
 }

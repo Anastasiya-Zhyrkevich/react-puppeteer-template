@@ -3,10 +3,16 @@ const { Button, Image, StyleSheet, Text, View, TouchableOpacity, FlatList } = wi
 const {NavigationContainer} = reactNavigationNative;
 const {createStackNavigator} = reactNavigationStack;
 
+const redHex = '#a6330d';
+const blueHex = '#3944db';
+const grayHex = '#7d807a';
 
-const redCard = `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#a6330d" stroke="black" rx="15" stroke-width="1" /></svg>`
-const blueCard = `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#3944db" stroke="black" rx="15" stroke-width="1" /></svg>`
-const backCard =`data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="#7d807a" stroke="black" rx="15" stroke-width="1" /></svg>`
+const CARD_SVG_TEMPLATE = (cardColor) => `data:image/svg+xml;utf8,<svg role="img" viewBox="0 0 100 200" width="100" height="200" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="200" fill="${cardColor}" stroke="black" rx="15" stroke-width="1" /></svg>`;
+
+const redCard = CARD_SVG_TEMPLATE(redHex);
+const blueCard = CARD_SVG_TEMPLATE(blueHex);
+const backCard = CARD_SVG_TEMPLATE(grayHex);
+
 
 const colorMapping = {
   'red': redCard,
@@ -26,7 +32,17 @@ const styles = {
   },
   buttonsArea: {
     justifyContent: 'space-between'
-  }
+  },
+  buttonRedStyle: {
+    alignItems: "center",
+    backgroundColor: redHex,
+    padding: 10
+  },
+  buttonBlueStyle: {
+    alignItems: "center",
+    backgroundColor: blueHex,
+    padding: 10
+  },
 }
 
 class Card extends React.Component {
@@ -56,7 +72,6 @@ class Card extends React.Component {
     }
 
     return (
-      <View>
         <TouchableOpacity 
           onPress={this._onPressCard}>
           <Image
@@ -67,7 +82,6 @@ class Card extends React.Component {
               ref={this._onRef}
           />
         </TouchableOpacity>
-      </View>
     );
   }
 }
@@ -81,12 +95,15 @@ class AddingCardButton extends React.Component {
 
   render() {
     return (
-        <Button
+      <View>
+        <TouchableOpacity 
           onPress={this.props.onPress}
-          title={this.props.title}
-          color="#841584"
-          ref={this._onRef}
-        />
+          style={this.props.style}>
+          <Text ref={this._onRef}>
+            {this.props.title}
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
@@ -97,7 +114,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       currentInd: 3,
-      data: [{id: "card1", color: "red"}, {id: "card2", color: "red"}]
+      data: [{id: "card1", color: "blue"}, {id: "card2", color: "red"}]
     };
   }
 
@@ -119,8 +136,18 @@ class App extends React.Component {
       return (
       <View>
         <View style={styles.buttonsArea}> 
-          <AddingCardButton valueId="buttonRed" onPress={() => this.addCard("red")} title="Add Red"/>
-          <AddingCardButton valueId="buttonBlue" onPress={() => this.addCard("blue")} title="Add Blue"/>
+          <AddingCardButton 
+            valueId="buttonRed" 
+            onPress={() => this.addCard("red")} 
+            title="Add Red"
+            style={styles.buttonRedStyle}
+          />
+          <AddingCardButton 
+            valueId="buttonBlue" 
+            onPress={() => this.addCard("blue")} 
+            title="Add Blue"
+            style={styles.buttonBlueStyle}
+          />
         </View>
         <FlatList
           numColumns={2}
